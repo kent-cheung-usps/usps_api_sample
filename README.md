@@ -19,6 +19,14 @@ curl http://localhost:8080/greeting
 curl http://localhost:8080/greeting?name=ABCD
 curl -X POST http://56.94.74.138:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
 ```
+### Spring Actuator
+```
+http://localhost:8080/actuator/health
+```
+### Swagger
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
 ## Qucik Note Create SSL Cert
 **Create PKCS12**
