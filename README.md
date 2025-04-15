@@ -3,7 +3,7 @@
 ## Quick Steps
 1. Clone it: 
 ```
-git clone https://kcheung00@github.com/kcheung00/spring_ws_template.git
+git clone https://github.com/kcheung00/usps_api_sample.git
 ```
 2. Build by Maven
 ```
@@ -17,6 +17,7 @@ mvn spring-boot:run
 ```
 curl http://localhost:8080/greeting
 curl http://localhost:8080/greeting?name=ABCD
+curl -X POST http://56.94.74.138:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
 ```
 
 ## Qucik Note Create SSL Cert
