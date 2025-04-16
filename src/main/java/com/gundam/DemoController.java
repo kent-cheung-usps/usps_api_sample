@@ -18,15 +18,15 @@ public class DemoController {
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
-	
-//	@GetMapping("/greeting_post")
-//	public Greeting greeting_post(@RequestParam(value = "name", defaultValue = "World") String name) {
-//		return new Greeting(counter.incrementAndGet(), String.format(template, name));
-//	}
-	
+		
 	@PostMapping("/PostGreeting")
 	public Greeting greeting(@RequestBody PostGreetingRequest request) {
 	    return new Greeting(counter.incrementAndGet(), String.format(template, request.getName()));
 	}
 
+	@PostMapping("/PostParam")
+	public String handlePostRequest(@RequestParam String param1, @RequestParam String param2) {
+		String msg = "Hello " + param1 + ". Let's Do IT!!!! " + param2;
+		return msg;
+	}
 }
