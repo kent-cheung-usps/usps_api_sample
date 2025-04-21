@@ -18,6 +18,8 @@ mvn spring-boot:run
 curl http://localhost:8080/greeting
 curl http://localhost:8080/greeting?name=ABCD
 curl -X POST http://56.94.74.138:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
+curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
+
 ```
 ### Spring Actuator
 ```

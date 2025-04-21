@@ -13,10 +13,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.gundam.DemoController;
+import com.gundam.controller.GreetingController;
 
-@WebMvcTest(DemoController.class)
-public class DemoControllerTests {
+@WebMvcTest(GreetingController.class)
+public class GreetingControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;

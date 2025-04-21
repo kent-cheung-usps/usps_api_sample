@@ -1,4 +1,4 @@
-package com.gundam;
+package com.gundam.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gundam.service.Greeting;
+import com.gundam.service.PostGreetingRequest;
+
 @RestController
-public class DemoController {
+public class GreetingController {
 
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();

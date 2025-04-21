@@ -1,4 +1,4 @@
-package com.gundam;
+package com.gundam.service;
 
 public class Greeting {
 
