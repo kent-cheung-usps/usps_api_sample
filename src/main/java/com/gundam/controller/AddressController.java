@@ -20,6 +20,13 @@ public class AddressController {
     @PostMapping("/validate")
     public ResponseEntity<String> validateAddress(@RequestBody AddressRequest addressRequest) {
         try {
+        	
+        	System.setProperty("http.proxyHost", "proxy.usps.gov");
+        	System.setProperty("http.proxyPort", "8080");
+        	System.setProperty("https.proxyHost", "proxy.usps.gov");
+        	System.setProperty("https.proxyPort", "8080");
+        	System.setProperty("https.protocols", "TLSv1.2");
+        	
             String response = addressService.validateAddress(addressRequest);
             return ResponseEntity.ok(response);
         } catch (Exception e) {

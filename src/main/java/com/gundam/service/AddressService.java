@@ -42,10 +42,9 @@ public class AddressService {
                 addressRequest.getState());
 
         // Step 3: Validate Address
-//        "https://apis.usps.com/addresses/v3/address?streetAddress=3120%20M%20St&secondaryAddress=NW&city=Washington&state=DC"
+        // "https://apis.usps.com/addresses/v3/address?streetAddress=3120%20M%20St&secondaryAddress=NW&city=Washington&state=DC"
         HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create(ADDRESS_URL + "?" + queryParams))
-        		.uri(URI.create("https://apis.usps.com/addresses/v3/address?streetAddress=3120%20M%20St&secondaryAddress=NW&city=Washington&state=DC"))
+                .uri(URI.create(ADDRESS_URL + "?" + queryParams))
                 .header("accept", "application/json")
                 .header("x-user-id", "") // Empty x-user-id as per USPS requirements
                 .header("authorization", "Bearer " + accessToken)
