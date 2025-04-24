@@ -19,7 +19,7 @@ curl http://localhost:8080/greeting
 curl http://localhost:8080/greeting?name=ABCD
 curl -X POST http://56.94.74.138:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
 curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
-curl -X POST http://localhost:8080/address/validate -H "Content-Type: application/json" -d '{"streetAddress":"123 Main", "secondAddress":"NM", "city":"Washinton","state":"CD"}'
+curl -X POST http://localhost:8080/address/validate -H "Content-Type: application/json" -d '{"streetAddress":"3120%20M%20St", "secondaryAddress":"NM", "city":"Washington","state":"DC"}'
 ```
 ### Spring Actuator
 ```
