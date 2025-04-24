@@ -1,8 +1,9 @@
 package com.gundam.controller;
 
 import java.net.InetAddress;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import jakarta.annotation.PostConstruct;
 @RequestMapping("/address")
 public class AddressController {
 
-	private static final Logger LOGGER = Logger.getLogger(AddressService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
 	
 	@Value("${proxy.http.host}")
 	private String httpProxyHost;
@@ -53,7 +54,7 @@ public class AddressController {
             // Detect the current Domain
             String currentDomain = InetAddress.getLocalHost().getCanonicalHostName();
             
-            LOGGER.info("** CURRENT HOST == " + currentDomain );
+            logger.info("** CURRENT HOST == " + currentDomain );
 
             // Set USPS proxy if the current domain matches the required domain in properties file
             if (currentDomain.equalsIgnoreCase(requiredDomain)) {
@@ -64,11 +65,11 @@ public class AddressController {
                 System.setProperty("https.protocols", httpsProtocols);
                 System.out.println("Proxy settings applied for domain: " + currentDomain);
             } else {
-            	LOGGER.info("Executing outside domain " + requiredDomain + ". No proxy settings applied.");
+            	logger.info("Executing outside domain " + requiredDomain + ". No proxy settings applied.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LOGGER.info("Error while configuring proxy settings: " + e.getMessage());
+            logger.info("Error while configuring proxy settings: " + e.getMessage());
         }
     }
     

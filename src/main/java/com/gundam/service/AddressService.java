@@ -5,9 +5,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.logging.Logger;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import com.gundam.dto.AddressRequest;
 
 @Service
 public class AddressService {
-    private static final Logger LOGGER = Logger.getLogger(AddressService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(AddressService.class);
 
     @Value("${usps.token-url}")
     private String tokenUrl;
@@ -39,7 +40,7 @@ public class AddressService {
             throw new Exception("Failed to retrieve access token.");
         }
 
-        LOGGER.info("Access Token retrieved successfully: " + accessToken);
+        logger.info("Access Token retrieved successfully: " + accessToken);
 
         // Step 2: Construct Query Parameters
         String queryParams = String.format("streetAddress=%s&secondaryAddress=%s&city=%s&state=%s",
@@ -80,9 +81,9 @@ public class AddressService {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        LOGGER.info(Integer.toString(response.statusCode()));
+        logger.info(Integer.toString(response.statusCode()));
         if (response.statusCode() != 200) {
-            LOGGER.severe("Token request failed with status: " + response.statusCode() + ", response: " + response.body());
+        	logger.error("Token request failed with status: " + response.statusCode() + ", response: " + response.body());
             return null;
         }
 
