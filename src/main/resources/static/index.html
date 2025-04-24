@@ -53,6 +53,22 @@
                     document.getElementById('response').textContent = `Error: ${error}`;
                 });
         }
+
+        function submitAddressValidation() {
+            const streetAddress = document.getElementById('streetAddress').value;
+            const secondaryAddress = document.getElementById('secondaryAddress').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+
+            const data = {
+                streetAddress: encodeURIComponent(streetAddress),
+                secondaryAddress: encodeURIComponent(secondaryAddress),
+                city: encodeURIComponent(city),
+                state: encodeURIComponent(state)
+            };
+
+            sendRequest('/address/validate', 'POST', data);
+        }
     </script>
 </head>
 <body>
@@ -79,6 +95,23 @@
         <label for="param2">Param2:</label>
         <input type="text" id="param2" name="param2" placeholder="Enter param2">
         <button type="submit">Submit</button>
+    </form>
+
+    <h2>POST /address/validate</h2>
+    <form onsubmit="event.preventDefault(); submitAddressValidation();">
+        <label for="streetAddress">Street Address:</label>
+        <input type="text" id="streetAddress" name="streetAddress" placeholder="Enter street address" required>
+
+        <label for="secondaryAddress">Secondary Address:</label>
+        <input type="text" id="secondaryAddress" name="secondaryAddress" placeholder="Enter secondary address">
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" placeholder="Enter city" required>
+
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" placeholder="Enter state" required>
+
+        <button type="submit">Validate Address</button>
     </form>
 
     <h2>Response</h2>
