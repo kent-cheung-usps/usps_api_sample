@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DemoController Test</title>
-    <script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DemoController Test</title>
+<script>
         async function sendRequest(endpoint, method, data) {
             try {
                 const response = await fetch(endpoint, {
@@ -15,9 +15,9 @@
                     body: JSON.stringify(data)
                 });
                 const result = await response.json();
-                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('usps_response').textContent = JSON.stringify(result, null, 2);
             } catch (error) {
-                document.getElementById('response').textContent = `Error: ${error}`;
+                document.getElementById('usps_response').textContent = `Error: ${error}`;
             }
         }
 
@@ -72,52 +72,73 @@
     </script>
 </head>
 <body>
-    <h1>3rd Party App Test</h1>
+	<h1>Dev Portal Callback App</h1>
 
-    <h2>GET /greeting</h2>
-    <form onsubmit="event.preventDefault(); submitGreeting();">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter name">
-        <br></br>
-        <button type="submit">Submit</button>
-    </form>
+	<h2>POST /address/validate</h2>
+	<form onsubmit="event.preventDefault(); submitAddressValidation();">
+		<label for="streetAddress">Street Address:</label> 
+		<select id="streetAddress" name="streetAddress" required>
+			<option value="">Select street address</option>
+    		<option value="12752 MANGROVE FOREST DR">12752 MANGROVE FOREST DR</option>
+    		<option value="225 E 12TH ST">225 E 12TH ST</option>
+		</select>
+		<br></br> 
+		<label for="secondaryAddress">Secondary Address:</label> 
+		<select id="secondaryAddress" name="secondaryAddress">
+			<option value="">Select secondary address</option>			
+			<option value="Suite">Suite #300</option>
+			<option value="NA">NA</option>
+		</select>
+		<br></br> 
+		<label for="city">City:</label> 
+		<select id="city"
+			name="city" required>
+			<option value="">Select city</option>
+			<option value="RIVERVIEW">RIVERVIEW</option>
+			<option value="LOS ANGELES">LOS ANGELES</option>
+		</select> 
+		<br></br> 
+		<label for="state">State:</label> 
+		<select id="state"
+			name="state" required>
+			<option value="">Select state</option>
+			<option value="FL">FL</option>
+			<option value="CA">CA</option>
+		</select> 
+		<br></br>
+		<button type="submit">Validate Address</button>
+	</form>
 
-    <h2>POST /PostGreeting</h2>
-    <form onsubmit="event.preventDefault(); submitPostGreeting();">
-        <label for="postGreetingName">Name:</label>
-        <input type="text" id="postGreetingName" name="postGreetingName" placeholder="Enter name">
-        <br></br>
-        <button type="submit">Submit</button>
-    </form>
+	<h2>USPS API Response</h2>
+	<pre id="usps_response"></pre>
+	
+	<hr>
+	
+	<h2>GET /greeting</h2>
+	<form onsubmit="event.preventDefault(); submitGreeting();">
+		<label for="name">Name:</label> <input type="text" id="name"
+			name="name" placeholder="Enter name">
+		<button type="submit">Submit</button>
+	</form>
 
-    <h2>POST /PostParam</h2>
-    <form onsubmit="event.preventDefault(); submitPostParam();">
-        <label for="param1">Param1:</label>
-        <input type="text" id="param1" name="param1" placeholder="Enter param1">
-        <label for="param2">Param2:</label>
-        <input type="text" id="param2" name="param2" placeholder="Enter param2">
-        <br></br>
-        <button type="submit">Submit</button>
-    </form>
+	<h2>POST /PostGreeting</h2>
+	<form onsubmit="event.preventDefault(); submitPostGreeting();">
+		<label for="postGreetingName">Name:</label> <input type="text"
+			id="postGreetingName" name="postGreetingName"
+			placeholder="Enter name">
+		<button type="submit">Submit</button>
+	</form>
 
-    <h2>POST /address/validate</h2>
-    <form onsubmit="event.preventDefault(); submitAddressValidation();">
-        <label for="streetAddress">Street Address:</label>
-        <input type="text" id="streetAddress" name="streetAddress" placeholder="Enter street address" required>
+	<h2>POST /PostParam</h2>
+	<form onsubmit="event.preventDefault(); submitPostParam();">
+		<label for="param1">Param1:</label> <input type="text" id="param1"
+			name="param1" placeholder="Enter param1"> <br></br> <label
+			for="param2">Param2:</label> <input type="text" id="param2"
+			name="param2" placeholder="Enter param2"> <br></br>
+		<button type="submit">Submit</button>
+	</form>
 
-        <label for="secondaryAddress">Secondary Address:</label>
-        <input type="text" id="secondaryAddress" name="secondaryAddress" placeholder="Enter secondary address">
-
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" placeholder="Enter city" required>
-
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" placeholder="Enter state" required>
-        <br></br>
-        <button type="submit">Validate Address</button>
-    </form>
-
-    <h2>Response</h2>
-    <pre id="response"></pre>
+	<h2>Response</h2>
+	<pre id="response"></pre>
 </body>
 </html>
