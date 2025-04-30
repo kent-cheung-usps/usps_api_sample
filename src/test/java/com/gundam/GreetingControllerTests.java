@@ -1,7 +1,9 @@
 package com.gundam;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.gundam.controller.GreetingController;
@@ -22,18 +25,28 @@ public class GreetingControllerTests {
 	private MockMvc mockMvc;
 
 	@Test
-    void testGreetingDefault() throws Exception {
-        mockMvc.perform(get("/greeting"))
+    public void testGreetingGet() throws Exception {
+        mockMvc.perform(get("/greeting").param("name", "John"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.content").value("Hello, World!"));
+                .andExpect(content().string("{\"id\":1,\"content\":\"Hello, John!\"}"));
     }
 
     @Test
-    void testGreetingWithName() throws Exception {
-        mockMvc.perform(get("/greeting").param("name", "Guntank"))
+    public void testPostGreeting() throws Exception {
+        String requestBody = "{\"name\":\"Jane\"}";
+        mockMvc.perform(post("/PostGreeting")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.content").value("Hello, Guntank!"));
+                .andExpect(content().string("{\"id\":1,\"content\":\"Hello, Jane!\"}"));
+    }
+
+    @Test
+    public void testPostParam() throws Exception {
+        mockMvc.perform(post("/PostParam")
+                .param("param1", "Alice")
+                .param("param2", "Bob"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello Alice. Let's Do IT!!!! Bob"));
     }
 }
