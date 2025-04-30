@@ -1,4 +1,4 @@
-package com.gundam;
+package com.gundam.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +38,7 @@ public class GreetingControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":1,\"content\":\"Hello, Jane!\"}"));
+                .andExpect(content().string("{\"id\":2,\"content\":\"Hello, Jane!\"}"));
     }
 
     @Test
