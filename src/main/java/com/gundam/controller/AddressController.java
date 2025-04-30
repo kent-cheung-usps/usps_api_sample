@@ -44,6 +44,8 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
     
+    private String currentDomain;
+    
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
@@ -52,7 +54,8 @@ public class AddressController {
     public void configureProxySettings() {
         try {
             // Detect the current Domain
-            String currentDomain = InetAddress.getLocalHost().getCanonicalHostName();
+        	if( currentDomain == null )
+        		currentDomain = InetAddress.getLocalHost().getCanonicalHostName();
             
             logger.info("** CURRENT HOST == " + currentDomain );
 
@@ -82,4 +85,5 @@ public class AddressController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
 }
