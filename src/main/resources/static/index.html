@@ -21,6 +21,27 @@
             }
         }
 
+        function submitSearchCityByZipcode() {
+            const zipCode = document.getElementById('zipCode').value;
+
+            const requestData = { zipCode: zipCode };
+
+            fetch('/search/city', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('usps_response').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('usps_response').textContent = `Error: ${error}`;
+            });
+        }
+
         function submitGreeting() {
             const name = document.getElementById('name').value;
             const url = `/greeting?name=${encodeURIComponent(name)}`;
@@ -69,6 +90,24 @@
 
             sendRequest('/address/validate', 'POST', data);
         }
+        
+        function submitSearchCityByZipcode() {
+            const zipCode = document.getElementById('zipCode').value;
+
+            const requestData = { zipCode: zipCode };
+
+            sendRequest('/search/city', 'POST', requestData)
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('cityStateResponse').textContent = `Error: ${data.error}`;
+                    } else {
+                        document.getElementById('cityStateResponse').textContent = JSON.stringify(data, null, 2);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('cityStateResponse').textContent = `Error: ${error}`;
+                });
+        }
     </script>
 </head>
 <body>
@@ -107,6 +146,13 @@
 		</select> 
 		<br></br>
 		<button type="submit">Validate Address</button>
+	</form>
+	
+	<h2>Search City by ZIP Code</h2>
+	<form onsubmit="event.preventDefault(); submitSearchCityByZipcode();">
+		<label for="zipCode">ZIP Code:</label> 
+		<input type="text" id="zipCode" name="zipCode" placeholder="Enter ZIP Code" required>
+		<button type="submit">Search</button>
 	</form>
 
 	<h2>USPS API Response</h2>
