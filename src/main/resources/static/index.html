@@ -5,140 +5,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DemoController Test</title>
 <script>
-        async function sendRequest(endpoint, method, data) {
-            try {
-                const response = await fetch(endpoint, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                const result = await response.json();
-                document.getElementById('usps_response').textContent = JSON.stringify(result, null, 2);
-            } catch (error) {
-                document.getElementById('usps_response').textContent = `Error: ${error}`;
-            }
+    async function sendRequest(endpoint, method, data) {
+        try {
+            const response = await fetch(endpoint, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            throw error;
         }
+    }
 
-        function submitGreeting() {
-            const name = document.getElementById('name').value;
-            const url = `/greeting?name=${encodeURIComponent(name)}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
-                })
-                .catch(error => {
-                    document.getElementById('response').textContent = `Error: ${error}`;
-                });
+    async function submitSearchCityByZipcode() {
+        const zipCode = document.getElementById('zipCode').value;
+        const requestData = { zipCode: zipCode };
+
+        try {
+            const data = await sendRequest('/search/city', 'POST', requestData);
+            document.getElementById('usps_response').textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            document.getElementById('usps_response').textContent = `Error: ${error}`;
         }
+    }
 
-        function submitPostGreeting() {
-            const name = document.getElementById('postGreetingName').value;
-            const data = { name: name };
-            sendRequest('/PostGreeting', 'POST', data);
+    async function submitGreeting() {
+        const name = document.getElementById('name').value;
+        const url = `/greeting?name=${encodeURIComponent(name)}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            document.getElementById('response').textContent = `Error: ${error}`;
         }
+    }
 
-        function submitPostParam() {
-            const param1 = document.getElementById('param1').value;
-            const param2 = document.getElementById('param2').value;
-            const url = `/PostParam?param1=${encodeURIComponent(param1)}&param2=${encodeURIComponent(param2)}`;
-            fetch(url, { method: 'POST' })
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('response').textContent = data;
-                })
-                .catch(error => {
-                    document.getElementById('response').textContent = `Error: ${error}`;
-                });
+    async function submitPostGreeting() {
+        const name = document.getElementById('postGreetingName').value;
+        const data = { name: name };
+
+        try {
+            const result = await sendRequest('/PostGreeting', 'POST', data);
+            document.getElementById('usps_response').textContent = JSON.stringify(result, null, 2);
+        } catch (error) {
+            document.getElementById('usps_response').textContent = `Error: ${error}`;
         }
+    }
 
-        function submitAddressValidation() {
-            const streetAddress = document.getElementById('streetAddress').value;
-            const secondaryAddress = document.getElementById('secondaryAddress').value;
-            const city = document.getElementById('city').value;
-            const state = document.getElementById('state').value;
+    async function submitPostParam() {
+        const param1 = document.getElementById('param1').value;
+        const param2 = document.getElementById('param2').value;
+        const url = `/PostParam?param1=${encodeURIComponent(param1)}&param2=${encodeURIComponent(param2)}`;
 
-            const data = {
-                streetAddress: encodeURIComponent(streetAddress),
-                secondaryAddress: encodeURIComponent(secondaryAddress),
-                city: encodeURIComponent(city),
-                state: encodeURIComponent(state)
-            };
-
-            sendRequest('/address/validate', 'POST', data);
+        try {
+            const response = await fetch(url, { method: 'POST' });
+            const data = await response.text();
+            document.getElementById('response').textContent = data;
+        } catch (error) {
+            document.getElementById('response').textContent = `Error: ${error}`;
         }
-    </script>
+    }
+
+    async function submitAddressValidation() {
+        const streetAddress = document.getElementById('streetAddress').value;
+        const secondaryAddress = document.getElementById('secondaryAddress').value;
+        const city = document.getElementById('city').value;
+        const state = document.getElementById('state').value;
+
+        const data = {
+            streetAddress: encodeURIComponent(streetAddress),
+            secondaryAddress: encodeURIComponent(secondaryAddress),
+            city: encodeURIComponent(city),
+            state: encodeURIComponent(state)
+        };
+
+        try {
+            const result = await sendRequest('/address/validate', 'POST', data);
+            document.getElementById('usps_response').textContent = JSON.stringify(result, null, 2);
+        } catch (error) {
+            document.getElementById('usps_response').textContent = `Error: ${error}`;
+        }
+    }
+</script>
 </head>
 <body>
-	<h1>Dev Portal Callback App</h1>
+    <h1>Dev Portal Callback App</h1>
 
-	<h2>POST /address/validate</h2>
-	<form onsubmit="event.preventDefault(); submitAddressValidation();">
-		<label for="streetAddress">Street Address:</label> 
-		<select id="streetAddress" name="streetAddress" required>
-			<option value="">Select street address</option>
-    		<option value="12752 MANGROVE FOREST DR">12752 MANGROVE FOREST DR</option>
-    		<option value="225 E 12TH ST">225 E 12TH ST</option>
-		</select>
-		<br></br> 
-		<label for="secondaryAddress">Secondary Address:</label> 
-		<select id="secondaryAddress" name="secondaryAddress">
-			<option value="">Select secondary address</option>			
-			<option value="Suite">Suite #300</option>
-			<option value="NA">NA</option>
-		</select>
-		<br></br> 
-		<label for="city">City:</label> 
-		<select id="city"
-			name="city" required>
-			<option value="">Select city</option>
-			<option value="RIVERVIEW">RIVERVIEW</option>
-			<option value="LOS ANGELES">LOS ANGELES</option>
-		</select> 
-		<br></br> 
-		<label for="state">State:</label> 
-		<select id="state"
-			name="state" required>
-			<option value="">Select state</option>
-			<option value="FL">FL</option>
-			<option value="CA">CA</option>
-		</select> 
-		<br></br>
-		<button type="submit">Validate Address</button>
-	</form>
+    <h2>POST /address/validate</h2>
+    <form onsubmit="event.preventDefault(); submitAddressValidation();">
+        <label for="streetAddress">Street Address:</label> 
+        <select id="streetAddress" name="streetAddress" required>
+            <option value="">Select street address</option>
+            <option value="12752 MANGROVE FOREST DR">12752 MANGROVE FOREST DR</option>
+            <option value="225 E 12TH ST">225 E 12TH ST</option>
+        </select>
+        <br><br>
+        <label for="secondaryAddress">Secondary Address:</label> 
+        <select id="secondaryAddress" name="secondaryAddress">
+            <option value="">Select secondary address</option>			
+            <option value="Suite">Suite #300</option>
+            <option value="NA">NA</option>
+        </select>
+        <br><br>
+        <label for="city">City:</label> 
+        <select id="city" name="city" required>
+            <option value="">Select city</option>
+            <option value="RIVERVIEW">RIVERVIEW</option>
+            <option value="LOS ANGELES">LOS ANGELES</option>
+        </select>
+        <br><br>
+        <label for="state">State:</label> 
+        <select id="state" name="state" required>
+            <option value="">Select state</option>
+            <option value="FL">FL</option>
+            <option value="CA">CA</option>
+        </select>
+        <br><br>
+        <button type="submit">Validate Address</button>
+    </form>
+    
+    <h2>Search City by ZIP Code</h2>
+    <form onsubmit="event.preventDefault(); submitSearchCityByZipcode();">
+        <label for="zipCode">ZIP Code:</label> 
+        <input type="text" id="zipCode" name="zipCode" placeholder="Enter ZIP Code" required>
+        <button type="submit">Search</button>
+    </form>
 
-	<h2>USPS API Response</h2>
-	<pre id="usps_response"></pre>
-	
-	<hr>
-	
-	<h2>GET /greeting</h2>
-	<form onsubmit="event.preventDefault(); submitGreeting();">
-		<label for="name">Name:</label> <input type="text" id="name"
-			name="name" placeholder="Enter name">
-		<button type="submit">Submit</button>
-	</form>
+    <h2>USPS API Response</h2>
+    <pre id="usps_response"></pre>
+    
+    <hr>
+    
+    <h2>GET /greeting</h2>
+    <form onsubmit="event.preventDefault(); submitGreeting();">
+        <label for="name">Name:</label> <input type="text" id="name" name="name" placeholder="Enter name">
+        <button type="submit">Submit</button>
+    </form>
 
-	<h2>POST /PostGreeting</h2>
-	<form onsubmit="event.preventDefault(); submitPostGreeting();">
-		<label for="postGreetingName">Name:</label> <input type="text"
-			id="postGreetingName" name="postGreetingName"
-			placeholder="Enter name">
-		<button type="submit">Submit</button>
-	</form>
+    <h2>POST /PostGreeting</h2>
+    <form onsubmit="event.preventDefault(); submitPostGreeting();">
+        <label for="postGreetingName">Name:</label> <input type="text" id="postGreetingName" name="postGreetingName" placeholder="Enter name">
+        <button type="submit">Submit</button>
+    </form>
 
-	<h2>POST /PostParam</h2>
-	<form onsubmit="event.preventDefault(); submitPostParam();">
-		<label for="param1">Param1:</label> <input type="text" id="param1"
-			name="param1" placeholder="Enter param1"> <br></br> <label
-			for="param2">Param2:</label> <input type="text" id="param2"
-			name="param2" placeholder="Enter param2"> <br></br>
-		<button type="submit">Submit</button>
-	</form>
+    <h2>POST /PostParam</h2>
+    <form onsubmit="event.preventDefault(); submitPostParam();">
+        <label for="param1">Param1:</label> <input type="text" id="param1" name="param1" placeholder="Enter param1"> 
+        <br><br> 
+        <label for="param2">Param2:</label> <input type="text" id="param2" name="param2" placeholder="Enter param2"> 
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
 
-	<h2>Response</h2>
-	<pre id="response"></pre>
+    <h2>Response</h2>
+    <pre id="response"></pre>
 </body>
 </html>
