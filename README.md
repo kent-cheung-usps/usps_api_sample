@@ -3,7 +3,7 @@
 ## Quick Steps
 1. Clone it: 
 ```
-git clone https://github.com/kcheung00/usps_api_sample.git
+git clone https://github.com/kent-cheung-usps/usps_api_sample.git
 ```
 2. Build by Maven
 ```
