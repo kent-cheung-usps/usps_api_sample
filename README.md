@@ -42,7 +42,8 @@ http://localhost:8080/actuator/health
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## Qucik Note Create SSL Cert
+## Qucik Note 
+### Create SSL Cert
 **Create PKCS12**
 ```
 keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS12 -keystore springboot.p12 -validity 3650 -storepass myLocalStorePass
@@ -61,4 +62,8 @@ keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS1
 ```
 keytool -list -v -keystore springboot.p12
 (Password == myLocalStorePass)
+```
+### Encrypt a File Using AES
+```
+openssl enc -aes-256-cbc -salt -in original.txt -out encrypted.txt -k YOUR_SECRET_KEY
 ```
