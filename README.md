@@ -24,7 +24,7 @@ curl http://localhost:8080/greeting
 curl http://localhost:8080/greeting?name=ABCD
 ```
 ```
-curl -X POST http://56.94.74.138:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
+curl -X POST http://localhost:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
 ```
 ```
 curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
@@ -67,3 +67,8 @@ keytool -list -v -keystore springboot.p12
 ```
 openssl enc -aes-256-cbc -salt -in original.txt -out encrypted.txt -k YOUR_SECRET_KEY
 ```
+Example
+```
+http://56.94.76.203:8080/index.html
+```
+
