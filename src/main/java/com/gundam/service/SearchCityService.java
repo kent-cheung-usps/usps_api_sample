@@ -9,24 +9,26 @@ import java.time.Duration;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.gundam.config.DemoPropertiesCls;
 
 @Service
 public class SearchCityService {
 	private static final Logger logger = LoggerFactory.getLogger(SearchCityService.class);
-
-	@Value("${usps.token-url}")
-	private String tokenUrl;
-
+	
+	private final DemoPropertiesCls demoPropertiesCls;
+	
 	@Value("${usps.city-url}")
 	private String cityUrl;
 
-	@Value("${usps.client-id}")
-	private String clientId;
 
-	@Value("${usps.client-secret}")
-	private String clientSecret;
+    @Autowired
+    public SearchCityService(DemoPropertiesCls demoPropertiesCls) {
+        this.demoPropertiesCls = demoPropertiesCls;
+    }
 
 	public String searchCityByZipcode(String zipCode) throws Exception {
 		HttpClient client = HttpClient.newHttpClient();
@@ -43,6 +45,7 @@ public class SearchCityService {
 		String queryParams = String.format("ZIPCode=%s", zipCode);
 
 		// Step 3: Search City by ZIP Code
+		logger.info("cityUrl : " + cityUrl);
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(cityUrl + "?" + queryParams))
 				.header("accept", "application/json").header("authorization", "Bearer " + accessToken).GET().build();
 
@@ -56,25 +59,27 @@ public class SearchCityService {
 		return response.body();
 	}
 
-	private String getAccessToken(HttpClient client) throws Exception {
-		JSONObject requestBody = new JSONObject();
-		requestBody.put("client_id", clientId);
-		requestBody.put("client_secret", clientSecret);
-		requestBody.put("grant_type", "client_credentials");
+    private String getAccessToken(HttpClient client) throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("client_id", demoPropertiesCls.getClientId());
+        requestBody.put("client_secret", demoPropertiesCls.getClientSecret());
+        requestBody.put("grant_type", "client_credentials");
 
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(tokenUrl))
-				.header("Content-Type", "application/json").timeout(Duration.ofSeconds(30))
-				.POST(HttpRequest.BodyPublishers.ofString(requestBody.toString())).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(demoPropertiesCls.getTokenUrl()))
+                .header("Content-Type", "application/json")
+                .timeout(Duration.ofSeconds(30))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+                .build();
 
-		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		logger.info(Integer.toString(response.statusCode()));
-		if (response.statusCode() != 200) {
-			logger.error(
-					"Token request failed with status: " + response.statusCode() + ", response: " + response.body());
-			return null;
-		}
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        logger.info(Integer.toString(response.statusCode()));
+        if (response.statusCode() != 200) {
+            logger.error(
+                    "Token request failed with status: " + response.statusCode() + ", response: " + response.body());
+            return null;
+        }
 
-		JSONObject responseBody = new JSONObject(response.body());
-		return responseBody.getString("access_token");
-	}
-}
+        JSONObject responseBody = new JSONObject(response.body());
+        return responseBody.getString("access_token");
+    }}

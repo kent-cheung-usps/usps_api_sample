@@ -1,5 +1,6 @@
 package com.gundam.config;
 
+import com.gundam.util.FieldEncryptor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,9 +12,8 @@ public class DemoPropertiesCls {
     private String clientId;
     private String clientSecret;
 
-    // Getters and Setters
     public String getTokenUrl() {
-        return tokenUrl;
+        return decryptIfNeeded(tokenUrl);
     }
 
     public void setTokenUrl(String tokenUrl) {
@@ -21,7 +21,7 @@ public class DemoPropertiesCls {
     }
 
     public String getAddressUrl() {
-        return addressUrl;
+        return decryptIfNeeded(addressUrl);
     }
 
     public void setAddressUrl(String addressUrl) {
@@ -29,7 +29,7 @@ public class DemoPropertiesCls {
     }
 
     public String getClientId() {
-        return clientId;
+        return decryptIfNeeded(clientId);
     }
 
     public void setClientId(String clientId) {
@@ -37,10 +37,21 @@ public class DemoPropertiesCls {
     }
 
     public String getClientSecret() {
-        return clientSecret;
+        return decryptIfNeeded(clientSecret);
     }
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    private String decryptIfNeeded(String value) {
+        if (value != null && value.startsWith("{enc}")) {
+            try {
+                return FieldEncryptor.decrypt(value.substring(5));
+            } catch (Exception ex) {
+                throw new RuntimeException("Failed to decrypt property value: " + value, ex);
+            }
+        }
+        return value;
     }
 }
