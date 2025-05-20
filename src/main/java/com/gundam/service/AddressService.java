@@ -9,9 +9,11 @@ import java.time.Duration;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.gundam.config.DemoPropertiesCls;
 import com.gundam.dto.AddressRequest;
 
 
@@ -19,17 +21,15 @@ import com.gundam.dto.AddressRequest;
 public class AddressService {
     private static final Logger logger = LoggerFactory.getLogger(AddressService.class);
 
-    @Value("${usps.token-url}")
-    private String tokenUrl;
-
     @Value("${usps.address-url}")
     private String addressUrl;
 
-    @Value("${usps.client-id}")
-    private String clientId;
+    private final DemoPropertiesCls demoPropertiesCls;
 
-    @Value("${usps.client-secret}")
-    private String clientSecret;
+    @Autowired
+    public AddressService(DemoPropertiesCls demoPropertiesCls) {
+        this.demoPropertiesCls = demoPropertiesCls;
+    }
 
     public String validateAddress(AddressRequest addressRequest) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
@@ -69,12 +69,12 @@ public class AddressService {
 
     private String getAccessToken(HttpClient client) throws Exception {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("client_id", clientId);
-        requestBody.put("client_secret", clientSecret);
+        requestBody.put("client_id", demoPropertiesCls.getClientId());
+        requestBody.put("client_secret", demoPropertiesCls.getClientSecret());
         requestBody.put("grant_type", "client_credentials");
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(tokenUrl))
+                .uri(URI.create(demoPropertiesCls.getTokenUrl()))
                 .header("Content-Type", "application/json")
                 .timeout(Duration.ofSeconds(30))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
