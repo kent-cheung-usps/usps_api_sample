@@ -9,5 +9,4 @@ public class UspsApiDemo {
 	public static void main(String[] args) {
 		SpringApplication.run(UspsApiDemo.class, args);
 	}
-
 }
