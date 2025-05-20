@@ -80,26 +80,4 @@ public class FieldEncryptor {
             System.out.println("No values updated or already decrypted.");
         }
     }
-
-    // CLI Usage: java com.gundam.util.FieldEncryptor -e|-d field1,field2 path/to/application.properties
-    public static void main(String[] args) {
-        if (args.length != 3 || (!args[0].equals("-e") && !args[0].equals("-d"))) {
-            System.out.println("Usage: java com.gundam.util.FieldEncryptor -e|-d <field1,field2,...> <src/main/resources/application.properties>");
-            System.exit(1);
-        }
-        String mode = args[0];
-        Set<String> fields = Set.of(args[1].split(","));
-        String filePath = args[2];
-
-        try {
-            if (mode.equals("-e")) {
-                encryptFields(filePath, fields);
-            } else {
-                decryptFields(filePath, fields);
-            }
-        } catch (Exception ex) {
-            System.out.println("Operation failed: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
 }
