@@ -3,7 +3,7 @@
 ## Quick Steps
 1. Clone it: 
 ```
-git clone https://github.com/kent-cheung-usps/usps_api_sample.git
+git clone https://github.com/kcheung00/usps_api_sample.git
 ```
 2. Build by Maven
 ```
@@ -42,8 +42,7 @@ http://localhost:8080/actuator/health
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## Qucik Note 
-### Create SSL Cert
+## Qucik Note Create SSL Cert
 **Create PKCS12**
 ```
 keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS12 -keystore springboot.p12 -validity 3650 -storepass myLocalStorePass
@@ -63,12 +62,10 @@ keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS1
 keytool -list -v -keystore springboot.p12
 (Password == myLocalStorePass)
 ```
-### Encrypt a File Using AES
+Quick Note:
 ```
-openssl enc -aes-256-cbc -salt -in original.txt -out encrypted.txt -k YOUR_SECRET_KEY
+http://56.94.74.138:8080/index.html
 ```
-Example
 ```
 http://56.94.76.203:8080/index.html
 ```
-
