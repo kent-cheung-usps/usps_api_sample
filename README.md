@@ -64,8 +64,5 @@ keytool -list -v -keystore springboot.p12
 ```
 Quick Note:
 ```
-http://56.94.74.138:8080/index.html
-```
-```
 http://56.94.76.203:8080/index.html
 ```
