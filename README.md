@@ -1,46 +1,53 @@
-# My Spring Boot Web Service Template
+<details>
+  <summary><h2>Quick Started</h2></summary>
+  
+  1. Clone it: 
+  ```
+  git clone https://github.com/kcheung00/usps_api_sample.git
+  ```
+  2. Build by Maven
+  ```
+  mvn clean install
+  ```
+  3. Execute
+  ```
+  mvn spring-boot:run
+  ```
+  4. Verification
+  ```
+  curl -X POST http://localhost:8080/address/validate -H "Content-Type: application/json" -d '{"streetAddress":"3120%20M%20St", "secondaryAddress":"NM", "city":"Washington","state":"DC"}'
+  ```
+  ```
+  curl http://localhost:8080/greeting
+  ```
+  ```
+  curl http://localhost:8080/greeting?name=ABCD
+  ```
+  ```
+  curl -X POST http://localhost:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
+  ```
+  ```
+  curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
+  ```
+  ### Quick HTML UI
+  ```
+  http://localhost:8080/index.html
+  ```
+  ### Spring Actuator
+  ```
+  http://localhost:8080/actuator/health
+  ```
+  ### Swagger
+  ```
+  http://localhost:8080/swagger-ui/index.html
+  ```
+</details>
 
-## Quick Steps
-1. Clone it: 
-```
-git clone https://github.com/kcheung00/usps_api_sample.git
-```
-2. Build by Maven
-```
-mvn clean install
-```
-3. Execute
-```
-mvn spring-boot:run
-```
-4. Verification
-```
-curl -X POST http://localhost:8080/address/validate -H "Content-Type: application/json" -d '{"streetAddress":"3120%20M%20St", "secondaryAddress":"NM", "city":"Washington","state":"DC"}'
-```
-```
-curl http://localhost:8080/greeting
-```
-```
-curl http://localhost:8080/greeting?name=ABCD
-```
-```
-curl -X POST http://localhost:8080/PostGreeting -H "Content-Type: application/json" -d "{\"name\":\"John\"}"
-```
-```
-curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
-```
-### Quick HTML UI
-```
-http://localhost:8080/index.html
-```
-### Spring Actuator
-```
-http://localhost:8080/actuator/health
-```
-### Swagger
-```
-http://localhost:8080/swagger-ui/index.html
-```
+<details>
+  <summary><h2>Docker<h2></summary>
+  <!-- Content for Tab 2 goes here -->
+</details>
+
 
 ## Qucik Note Create SSL Cert
 **Create PKCS12**
