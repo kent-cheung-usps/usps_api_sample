@@ -44,31 +44,48 @@
 </details>
 
 <details>
-  <summary><h2>Docker<h2></summary>
-  <!-- Content for Tab 2 goes here -->
+  <summary><h2>Docker & Kubernetes<h2></summary>
+    
+  Ensure Dockerfile in the repo
+  ```
+  docker build -t usps_api_sample:local .
+  ```
+  Run the USPS API Sample locally with Docker
+  ```
+  docker run -p 8080:8080 usps_api_sample:local
+  ```
+  Apply the Kubernetes manifests files locally
+  ```
+  kubectl apply -f deployment.yaml
+  kubectl apply -f service.yaml
+  ```
+</details>
+
+<details>
+  <summary><h2>Create SSL Cert<h2></summary>
+    
+   Create PKCS12   
+   ```
+   keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS12 -keystore springboot.p12 -validity 3650 -storepass myLocalStorePass
+   ```
+    
+   - genkeypair: generates a key pair;
+   - alias: the alias name for the item we are generating;
+   - keyalg: the cryptographic algorithm to generate the key pair;
+   - keysize: the size of the key;
+   - storetype: the type of keystore;
+   - keystore: the name of the keystore;
+   - validity: validity number of days;
+   - storepass: a password for the keystore.
+    
+    **Verify**
+    ```
+    keytool -list -v -keystore springboot.p12
+    (Password == myLocalStorePass)
+    ```
 </details>
 
 
-## Qucik Note Create SSL Cert
-**Create PKCS12**
-```
-keytool -genkeypair -alias springboot -keyalg RSA -keysize 4096 -storetype PKCS12 -keystore springboot.p12 -validity 3650 -storepass myLocalStorePass
-```
-
-- genkeypair: generates a key pair;
-- alias: the alias name for the item we are generating;
-- keyalg: the cryptographic algorithm to generate the key pair;
-- keysize: the size of the key;
-- storetype: the type of keystore;
-- keystore: the name of the keystore;
-- validity: validity number of days;
-- storepass: a password for the keystore.
-
-**Verify**
-```
-keytool -list -v -keystore springboot.p12
-(Password == myLocalStorePass)
-```
 Quick Note:
 ```
 http://56.94.76.203:8080/index.html
