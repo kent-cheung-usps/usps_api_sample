@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usps-api-sample
+  labels:
+    app: usps-api-sample
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: usps-api-sample
+  template:
+    metadata:
+      labels:
+        app: usps-api-sample
+    spec:
+      containers:
+        - name: usps-api-sample
+          image: kcheung00/usps_api_sample:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
