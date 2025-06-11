@@ -1,9 +1,11 @@
-<details>
-  <summary><h2>Quick Started</h2></summary>
+## Disclaimer
+This document has been compiled based on personal notes and experiences. While intended for personal use, it is shared here for the benefit of others who may find it useful. Users are advised to adapt and expand these test steps to suit their specific needs and project requirements. No responsibility or liability is assumed for any outcomes or consequences resulting from the use of these notes.
+
+## Quick Started
   
   1. Clone it: 
   ```
-  git clone https://github.com/kcheung00/usps_api_sample.git
+  git clone https://github.com/kent-cheung-usps/usps_api_sample.git
   ```
   2. Build by Maven
   ```
@@ -29,37 +31,56 @@
   ```
   curl -X POST http://localhost:8080/PostParam -H "Content-Type: application/x-www-form-urlencoded" -d "param1=John&param2=GoForIt"
   ```
-  ### Quick HTML UI
+  #### Quick HTML UI
   ```
   http://localhost:8080/index.html
   ```
-  ### Spring Actuator
+  #### Spring Actuator
   ```
   http://localhost:8080/actuator/health
   ```
-  ### Swagger
+  #### Swagger
   ```
   http://localhost:8080/swagger-ui/index.html
   ```
-</details>
-
-<details>
-  <summary><h2>Docker & Kubernetes<h2></summary>
+## Local Deployment
+Deployment with Docker & Kubernetes
     
-  Ensure Dockerfile in the repo
+  Ensure Dockerfile in the repo, then build the image.
   ```
   docker build -t usps_api_sample:local .
   ```
-  Run the USPS API Sample locally with Docker
+  Run the USPS API Sample locally with Docker.
   ```
   docker run -p 8080:8080 usps_api_sample:local
   ```
-  Apply the Kubernetes manifests files locally
+  Confirm the usps_api_sample app run.  
+  `http://localhost:8080`
+
+  Push the Docker Image to a Registry (ex. Docker Hub).
+  ```
+  docker tag usps-api-sample:local <your-dockerhub-username>/usps-api-sample:latest
+  docker push <your-dockerhub-username>/usps-api-sample:latest
+  ```
+  Apply the Kubernetes manifests files locally.
   ```
   kubectl apply -f deployment.yaml
   kubectl apply -f service.yaml
   ```
-</details>
+  Confirm pods are running.
+  ```
+  kubectl get pods
+  ```
+  Verify the usps_api_sample is running healthy<br>
+  - `kubectl get svc`<br>
+  - `kubectl describe pod usps-api-sample`<br>
+  - `kubectl logs usps-api-sample`<br>
+  
+  Test Access to the sample app.
+  ```
+  kubectl port-forward svc/usps-api-sample 8080:80
+  ```
+  Navigate to: `http://localhost:8080` to confirm the app responds as expected.
 
 <details>
   <summary><h2>Create SSL Cert<h2></summary>
